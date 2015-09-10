@@ -5,7 +5,11 @@ VERSION_ALIASES =
 TITLE =			Cozy
 DESCRIPTION =		Cozy
 SOURCE_URL =		https://github.com/scaleway/image-app-cozy
+VENDOR_URL =		http://cozy.io/
 
+IMAGE_VOLUME_SIZE =	50G
+IMAGE_BOOTSCRIPT =	stable
+IMAGE_NAME =		Cozy Cloud
 
 # Forward ports
 SHELL_DOCKER_OPTS ?=    -p 80:80 -p 443:443
@@ -16,4 +20,3 @@ all:	docker-rules.mk
 docker-rules.mk:
 	wget -qO - http://j.mp/scw-builder | bash
 -include docker-rules.mk
-## Below you can add custom makefile commands and overrides
