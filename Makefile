@@ -4,7 +4,7 @@ VERSION =		latest
 VERSION_ALIASES =	
 TITLE =			Cozy
 DESCRIPTION =		Cozy
-SOURCE_URL =		https://github.com/scaleway/image-app-cozy
+SOURCE_URL =		https://github.com/scaleway-community/scaleway-cozy
 VENDOR_URL =		http://cozy.io/
 
 IMAGE_VOLUME_SIZE =	50G
