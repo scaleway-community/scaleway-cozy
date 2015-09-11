@@ -1,6 +1,6 @@
 # Official Cozy image on Scaleway
 
-[![Travis](https://img.shields.io/travis/scaleway/image-app-cozy.svg)](https://travis-ci.org/scaleway/image-app-cozy)
+[![Travis](https://img.shields.io/travis/scaleway-community/scaleway-cozy.svg)](https://travis-ci.org/scaleway-community/scaleway-cozy)
 [![Scaleway ImageHub](https://img.shields.io/badge/ImageHub-view-ff69b4.svg)](https://hub.scaleway.com/cozy.html)
 [![Run on Scaleway](https://img.shields.io/badge/Scaleway-run-69b4ff.svg)](https://cloud.scaleway.com/#/servers/new?image=coming-soon)
 
