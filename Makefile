@@ -1,5 +1,4 @@
-DOCKER_NAMESPACE =	armbuild/
-NAME =			scw-app-cozy
+NAME =			cozy
 VERSION =		latest
 VERSION_ALIASES =	
 TITLE =			Cozy
