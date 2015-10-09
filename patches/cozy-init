@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+pwgen -1 > /etc/cozy/couchdb.login
+pwgen -1 >> /etc/cozy/couchdb.login
+chown cozy-data-system /etc/cozy/couchdb.login
+chmod 640 /etc/cozy/couchdb.login
+pwgen -1 > /etc/cozy/controller.token
+chown cozy-home /etc/cozy/controller.token
+chmod 700 /etc/cozy/controller.token
+supervisorctl restart couchdb
+supervisorctl restart cozy-controller
+sleep 2
+curl -s -X PUT 127.0.0.1:5984/_config/admins/$(head -n1 /etc/cozy/couchdb.login) -d "\"$(tail -n1 /etc/cozy/couchdb.login)\""
+
+# Regenerate SSL certificates
+#if [ "$DISABLE_SSL" = "true" ]; then
+    rm -f /etc/nginx/sites-enabled/cozy-ssl
+    ln -sf /etc/nginx/sites-available/cozy /etc/nginx/sites-enabled/
+#else
+#    rm -f /etc/nginx/sites-enabled/cozy
+#    ln -sf /etc/nginx/sites-available/cozy-ssl /etc/nginx/sites-enabled/
+#
+#    if [ -z "$DOMAIN" ]; then
+#        DOMAIN=localhost
+#    fi
+#    openssl dhparam -out /etc/cozy/dh2048.pem -outform PEM -2 2048
+#    openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/cozy/server.key -out /etc/cozy/server.crt -days 3650 -subj "/CN=$DOMAIN"
+#    chown cozy:cozy /etc/cozy/server.key
+#    chmod 600 /etc/cozy/server.key
+#fi
+supervisorctl restart nginx
+
+## Restart cozy-controller when CouchDB is available
+while ! curl -s 127.0.0.1:5984; do sleep 5; done
+cozy-monitor restart-cozy-stack
+
+rm -f /etc/supervisor/conf.d/cozy-init.conf
