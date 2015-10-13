@@ -1,14 +1,14 @@
 NAME =			cozy
 VERSION =		latest
 VERSION_ALIASES =	
-TITLE =			Cozy
-DESCRIPTION =		Cozy
+TITLE =			Cozy Cloud
+DESCRIPTION =		Cozy Cloud
 SOURCE_URL =		https://github.com/scaleway-community/scaleway-cozy
 VENDOR_URL =		http://cozy.io/
 
 IMAGE_VOLUME_SIZE =	150G
 IMAGE_BOOTSCRIPT =	latest
-IMAGE_NAME =		Cozy Cloud
+IMAGE_NAME =		Cozy Cloud (beta)
 
 # Forward ports
 #SHELL_DOCKER_OPTS ?=    -p 80:80 -p 443:443
