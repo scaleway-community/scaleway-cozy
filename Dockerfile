@@ -73,7 +73,7 @@ RUN mkdir -p /var/run/couchdb \
 
 
 RUN supervisord -c /etc/supervisord.conf \
- && sleep 5 \
+ && while ! curl -s 127.0.0.1:9002; do sleep 5; done \
  && cozy-monitor install data-system \
  && cozy-monitor install home \
  && cozy-monitor install proxy
