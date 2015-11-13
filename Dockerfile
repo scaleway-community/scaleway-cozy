@@ -9,7 +9,7 @@ RUN /usr/local/sbin/builder-enter
 RUN apt-get update \
  && apt-get upgrade -y \
  && apt-get install -y --force-yes ca-certificates apt-transport-https binutils \
-	build-essential coffeescript couchdb couchdb-bin couchdb-common cpp cpp-4.8 \
+	build-essential coffeescript cpp cpp-4.8 \
 	dpkg-dev erlang-asn1 erlang-base erlang-crypto erlang-eunit erlang-inets \
 	erlang-mnesia erlang-os-mon erlang-public-key erlang-runtime-tools erlang-snmp \
 	erlang-ssl erlang-syntax-tools erlang-tools erlang-webtool erlang-xmerl \
@@ -55,7 +55,7 @@ RUN wget -O - http://ubuntu.cozycloud.cc/cozy.gpg.key 2>/dev/null | apt-key add 
 	apt-get update ; \
 	apt-get update && \
 	apt-get install -y --force-yes cozy-indexer && \
-	apt-get install --download-only cozy
+	apt-get install --download-only cozy couchdb couchdb-bin couchdb-common
 
 # Clean APT cache for a lighter image.
 RUN apt-get clean \
