@@ -57,6 +57,9 @@ RUN wget -O - http://ubuntu.cozycloud.cc/cozy.gpg.key 2>/dev/null | apt-key add 
 	apt-get install -y --force-yes cozy-indexer && \
 	apt-get install --download-only cozy couchdb couchdb-bin couchdb-common
 
+ADD patches/cozy-init /etc/init.d/cozy-init
+ADD patches/etc/supervisor/conf.d/cozy-init.conf /etc/supervisor/conf.d/cozy-init.conf
+
 # Clean APT cache for a lighter image.
 RUN apt-get clean \
  && rm -fr /var/lib/{apt,dpkg,cache,log}
