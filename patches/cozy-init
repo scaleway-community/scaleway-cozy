@@ -2,12 +2,23 @@
 
 set -e
 
-apt-get update && apt-get install -qy couchdb
+LOCK=/tmp/cozy-init.lock
+LOGS=/tmp/post-configuration-cozy.log
 
-echo "postfix postfix/main_mailer_type string Internet Site" | debconf-set-selections
-echo "postfix postfix/mailname string $(curl https://ip.cozycloud.cc/)" | debconf-set-selections
-echo "cozy cozy/fqdn string $(curl https://ip.cozycloud.cc/)" | debconf-set-selections
-echo 'cozy cozy/certificate text ' | debconf-set-selections
-apt-get install -qy cozy
+if [ -e $LOCK ]; then
+	echo 'Allready in progress' 2>&1 | tee -a $LOGS
+	exit 0
+fi
 
-rm -f /etc/supervisor/conf.d/cozy-init.conf
+mkdir -p $LOCK
+
+apt-get update && apt-get install -qy couchdb 2>&1 | tee -a $LOGS
+
+echo "postfix postfix/main_mailer_type string Internet Site" | debconf-set-selections 2>&1 | tee -a $LOGS
+echo "postfix postfix/mailname string $(curl https://ip.cozycloud.cc/)" | debconf-set-selections 2>&1 | tee -a $LOGS
+echo "cozy cozy/fqdn string $(curl https://ip.cozycloud.cc/)" | debconf-set-selections 2>&1 | tee -a $LOGS
+echo 'cozy cozy/certificate text ' | debconf-set-selections 2>&1 | tee -a $LOGS
+apt-get install -qy cozy 2>&1 | tee -a $LOGS
+
+rmdir $LOCK
+mv /etc/supervisor/conf.d/cozy-init.conf /root/
