@@ -59,6 +59,10 @@ RUN wget -O - http://ubuntu.cozycloud.cc/cozy.gpg.key 2>/dev/null | apt-key add 
 
 ADD patches/cozy-init /etc/init.d/cozy-init
 ADD patches/etc/supervisor/conf.d/cozy-init.conf /etc/supervisor/conf.d/cozy-init.conf
+ADD patches/welcome.txt /root/welcome.txt
+
+RUN echo 'cat /root/welcome.txt' >> /root/.bashrc
+RUN mv /etc/issue /etc/issue.ori && (cat /root/welcome.txt ; echo -ne '\nBased on ' ; cat /etc/issue.ori) > /etc/issue
 
 # Clean APT cache for a lighter image.
 RUN apt-get clean \
