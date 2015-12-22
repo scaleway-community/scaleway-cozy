@@ -1,3 +1,8 @@
+#!/bin/sh
+
+
+cat << EOF
+
                                 :=+++++++++++~:                                 
                             ,=+++++++++++++++++++~                              
                           ,+++++++++==~~~=++++++++++                            
@@ -42,3 +47,11 @@ Join us on:
 https://forum.cozy.io/
 #cozycloud on freenode
 Twitter: @MyCozyCloud
+
+-----------------------------------------------------
+
+The installation can take a long time, follow it with:
+
+$> tail -f /tmp/post-configuration-cozy.log
+
+EOF
