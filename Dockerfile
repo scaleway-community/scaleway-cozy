@@ -47,26 +47,20 @@ RUN apt-get update \
 	python-dateutil python-dev python-distlib python-html5lib python-meld3 \
 	python-mysqldb python-pip python-pkg-resources python-pycurl python-setuptools \
 	python-software-properties python-tornado python-virtualenv python-whoosh \
-	python2.7-dev sqlite3 ssl-cert supervisor zlib1g-dev && \
-	apt-get clean
+	python2.7-dev sqlite3 ssl-cert supervisor zlib1g-dev \
+ && apt-get clean
 
-RUN wget -O - http://ubuntu.cozycloud.cc/cozy.gpg.key 2>/dev/null | apt-key add - && \
-	echo 'deb http://ubuntu.cozycloud.cc/debian trusty main' > /etc/apt/sources.list.d/cozy.list && \
-	apt-get update ; \
-	apt-get update && \
-	apt-get install -y --force-yes cozy-indexer && \
-	apt-get install --download-only cozy couchdb couchdb-bin couchdb-common
+RUN wget -O - http://ubuntu.cozycloud.cc/cozy.gpg.key 2>/dev/null | apt-key add - \
+ && echo 'deb http://ubuntu.cozycloud.cc/debian trusty main' > /etc/apt/sources.list.d/cozy.list \
+ && apt-get update; apt-get update \
+ && apt-get install -y --force-yes cozy-indexer \
+ && apt-get install --download-only \
+   couchdb         \
+   couchdb-bin     \
+   couchdb-common  \
+   cozy
 
-ADD patches/cozy-init /etc/init.d/cozy-init
-ADD patches/etc/supervisor/conf.d/cozy-init.conf /etc/supervisor/conf.d/cozy-init.conf
-ADD patches/welcome.txt /root/welcome.txt
-
-RUN echo 'cat /root/welcome.txt' >> /root/.bashrc
-RUN mv /etc/issue /etc/issue.ori && (cat /root/welcome.txt ; echo -ne '\nBased on ' ; cat /etc/issue.ori) > /etc/issue
-
-# Clean APT cache for a lighter image.
-RUN apt-get clean \
- && rm -fr /var/lib/{apt,dpkg,cache,log}
+ADD patches/etc/ /etc
 
 #EXPOSE 80 443
 
