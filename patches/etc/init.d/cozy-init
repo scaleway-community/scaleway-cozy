@@ -12,10 +12,12 @@ fi
 
 mkdir -p $LOCK
 
-apt-get update && apt-get install -qy couchdb 2>&1 | tee -a $LOGS
+dpkg-reconfigure couchdb 2>&1 | tee -a $LOGS
 
 echo "postfix postfix/main_mailer_type string Internet Site" | debconf-set-selections 2>&1 | tee -a $LOGS
 echo "postfix postfix/mailname string $(curl https://ip.cozycloud.cc/)" | debconf-set-selections 2>&1 | tee -a $LOGS
+dpkg-reconfigure -u -p high postfix 2>&1 | tee -a $LOGS
+
 echo "cozy cozy/fqdn string $(curl https://ip.cozycloud.cc/)" | debconf-set-selections 2>&1 | tee -a $LOGS
 echo 'cozy cozy/certificate text ' | debconf-set-selections 2>&1 | tee -a $LOGS
 apt-get install -qy cozy 2>&1 | tee -a $LOGS
