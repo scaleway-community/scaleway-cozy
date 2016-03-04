@@ -12,6 +12,8 @@ fi
 
 mkdir -p $LOCK
 
+apt-get update
+
 dpkg-reconfigure couchdb 2>&1 | tee -a $LOGS
 
 echo "postfix postfix/main_mailer_type string Internet Site" | debconf-set-selections 2>&1 | tee -a $LOGS
