@@ -14,17 +14,23 @@ mkdir -p $LOCK
 
 apt-get update
 
+COZY_URL=$(curl https://ip.cozycloud.cc/)
+
 dpkg-reconfigure couchdb 2>&1 | tee -a $LOGS
 
 echo "postfix postfix/main_mailer_type string Internet Site" | debconf-set-selections 2>&1 | tee -a $LOGS
-echo "postfix postfix/mailname string $(curl https://ip.cozycloud.cc/)" | debconf-set-selections 2>&1 | tee -a $LOGS
-dpkg-reconfigure -u -p high postfix 2>&1 | tee -a $LOGS
+echo "postfix postfix/mailname string ${COZY_URL}" | debconf-set-selections 2>&1 | tee -a $LOGS
 
-echo "cozy cozy/fqdn string $(curl https://ip.cozycloud.cc/)" | debconf-set-selections 2>&1 | tee -a $LOGS
+echo "cozy cozy/fqdn string ${COZY_URL}" | debconf-set-selections 2>&1 | tee -a $LOGS
 echo 'cozy cozy/certificate text ' | debconf-set-selections 2>&1 | tee -a $LOGS
-apt-get install -qy cozy 2>&1 | tee -a $LOGS
+
+dpkg-reconfigure -u -p high postfix 2>&1 | tee -a $LOGS
+apt-get install -qy cozy cozy-nginx 2>&1 | tee -a $LOGS
 
 echo 'Done' 2>&1 | tee -a $LOGS
 sed -i -e '/----------------------/,+5d' /etc/update-motd.d/70-cozy
 rmdir $LOCK
-mv /etc/supervisor/conf.d/cozy-init.conf /root/
+
+if [ -f /etc/supervisor/conf.d/cozy-init.conf ]; then
+	mv /etc/supervisor/conf.d/cozy-init.conf /root/
+fi
