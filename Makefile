@@ -5,6 +5,7 @@ TITLE =			Cozy Cloud
 DESCRIPTION =		Cozy Cloud
 SOURCE_URL =		https://github.com/scaleway-community/scaleway-cozy
 VENDOR_URL =		http://cozy.io/
+DEFAULT_IMAGE_ARCH =	x86_64
 
 IMAGE_VOLUME_SIZE =	150G
 IMAGE_BOOTSCRIPT =	latest
