@@ -37,6 +37,7 @@ RUN apt-get clean
 COPY ./overlay/ /
 
 RUN update-rc.d firstboot defaults
+RUN rm -f /etc/ssh/ssh_host_*_key /etc/ssh/ssh_host_*_key.pub
 
 # Export port for container-based runtime
 EXPOSE 80 443
