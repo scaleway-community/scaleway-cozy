@@ -25,7 +25,6 @@ cozy-standalone cozy/fqdn string ${COZY_URL}
 EOF
 
 dpkg-reconfigure -u -p high postfix
-export LC_MESSAGES=POSIX DEBIAN_FRONTEND=noninteractive
 apt-get install -y cozy cozy-nginx
 
 apt-get clean
