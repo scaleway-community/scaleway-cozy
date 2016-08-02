@@ -1,0 +1,39 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          firstboot
+# Required-Start:    $all
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Run on the very first boot
+### END INIT INFO
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+do_start() {
+        if [ -x /etc/firstboot ]; then
+                [ "$VERBOSE" != no ] && log_begin_msg "Running first boot scripts (/etc/firstboot)"
+                /etc/firstboot
+                update-rc.d -f firstboot remove
+                ES=$?
+                [ "$VERBOSE" != no ] && log_end_msg $ES
+                return $ES
+        fi
+}
+
+case "$1" in
+    start)
+        do_start
+        ;;
+    restart|reload|force-reload)
+        echo "Error: argument '$1' not supported" >&2
+        exit 3
+        ;;
+    stop)
+        ;;
+    *)
+        echo "Usage: $0 start|stop" >&2
+        exit 3
+        ;;
+esac

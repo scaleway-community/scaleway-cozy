@@ -1,0 +1,35 @@
+#!/bin/bash
+set -e
+
+LOCK=/tmp/cozy-init.lock
+
+if [ -e $LOCK ]; then
+	echo 'Already in progress'
+	exit 0
+fi
+mkdir -p $LOCK
+
+COZY_URL=$(curl -s https://ip.cozycloud.cc/)
+
+rm -f /etc/apt/sources.list.d/cozy.list.ucf-dist
+apt-get update
+
+dpkg-reconfigure couchdb
+
+cat <<EOF | debconf-set-selections
+postfix postfix/main_mailer_type string Internet Site
+postfix postfix/mailname string ${COZY_URL}
+cozy-standalone cozy/certificate string
+cozy-standalone cozy/certificate_type select selfsigned
+cozy-standalone cozy/fqdn string ${COZY_URL}
+EOF
+
+dpkg-reconfigure -u -p high postfix
+export LC_MESSAGES=POSIX DEBIAN_FRONTEND=noninteractive
+apt-get install -y cozy cozy-nginx
+
+apt-get clean
+
+echo 'Done'
+sed -i -e '/----------------------/,+5d' /etc/update-motd.d/70-cozy
+rmdir $LOCK

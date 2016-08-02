@@ -36,6 +36,7 @@ RUN apt-get clean
 # Patch rootfs
 COPY ./overlay/ /
 
+RUN update-rc.d firstboot defaults
 
 # Export port for container-based runtime
 EXPOSE 80 443
